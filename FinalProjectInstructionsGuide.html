@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Project Instructions — Web Systems and Technology</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#1e1b4b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased transition-colors duration-200 selection:bg-brand-500 selection:text-white">
+
+  <!-- Toast Notification Banner -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 dark:bg-slate-800 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2.5 text-sm font-medium">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+    <span id="toastMessage">Action completed!</span>
+  </div>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand / Course Title -->
+      <div class="flex items-center gap-3 min-w-0">
+        <button id="mobileMenuBtn" type="button" aria-label="Open navigation menu" class="lg:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-700 text-white flex items-center justify-center shrink-0 shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+        </div>
+        <div class="truncate">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Web Systems and Technology</span>
+          </div>
+          <p class="text-sm font-bold text-slate-900 dark:text-white truncate">Final Project Instructions (PHP + MySQL + InfinityFree)</p>
+        </div>
+      </div>
+
+      <!-- Right Controls: Progress Pill + Theme Toggle -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a href="#tracker-section" class="hidden sm:flex items-center gap-2 bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800/60 px-3 py-1.5 rounded-xl text-xs font-semibold text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900/60 transition">
+          <span>Checklist:</span>
+          <span id="navProgressBadge" class="font-mono font-bold">0/16</span>
+        </a>
+
+        <button id="themeToggleBtn" type="button" aria-label="Toggle color theme" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition">
+          <!-- Sun Icon -->
+          <svg id="sunIcon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"/>
+            <path stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <!-- Moon Icon -->
+          <svg id="moonIcon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobileDrawerBackdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 hidden lg:hidden"></div>
+  <aside id="mobileDrawer" class="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 transform -translate-x-full transition-transform duration-200 ease-out lg:hidden flex flex-col">
+    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <span class="font-bold text-sm text-slate-900 dark:text-white">Guide Navigation</span>
+      <button id="closeMobileDrawerBtn" type="button" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 space-y-1.5 overflow-y-auto flex-1 text-sm" id="mobileNavLinks"></nav>
+  </aside>
+
+  <!-- Main Content Grid (Sidebar + Documentation Body) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-8">
+
+    <!-- Sticky Desktop Sidebar Navigation -->
+    <aside class="hidden lg:block w-64 shrink-0">
+      <div class="sticky top-24 space-y-6">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2.5">Project Modules</p>
+          <nav class="space-y-1 text-sm" id="desktopNavLinks">
+            <a href="#overview" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+              <span>I. General Instructions</span>
+            </a>
+            <a href="#part-1" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 1. Database Creation</span>
+            </a>
+            <a href="#part-2" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 2. PHP Back-End & CRUD</span>
+            </a>
+            <a href="#part-3" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 3. InfinityFree Deploy</span>
+            </a>
+            <a href="#submission" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 4. Submission, Guide & Video</span>
+            </a>
+            <a href="#reminders" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 5. Important Reminders</span>
+            </a>
+            <a href="#references" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+              <span>Part 6. References & Goal</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Mini Tracker Card in Sidebar -->
+        <div class="bg-gradient-to-br from-brand-600 to-indigo-800 rounded-2xl p-4 text-white shadow-md">
+          <div class="flex items-center justify-between text-xs font-semibold text-brand-100 mb-1.5">
+            <span>Submission Readiness</span>
+            <span id="sidebarProgressPct" class="font-mono font-bold text-white">0%</span>
+          </div>
+          <div class="w-full h-2 bg-black/25 rounded-full overflow-hidden mb-3">
+            <div id="sidebarProgressBar" class="h-full bg-emerald-400 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <a href="#tracker-section" class="block text-center w-full py-2 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold transition">
+            Open Checklist (<span id="sidebarProgressCount">0/16</span>)
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Primary Documentation Stream -->
+    <main class="flex-1 min-w-0 space-y-14 pb-16">
+
+      <!-- HERO & SECTION I: GENERAL INSTRUCTIONS -->
+      <section id="overview" class="scroll-mt-24 space-y-6">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 lg:p-10 shadow-xs relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-72 h-72 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950/80 border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-300 text-xs font-bold uppercase tracking-wider mb-4">
+            <span>Web Systems and Technology</span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight mb-4">
+            Final Project Instructions: Full-Stack PHP Web System Development, CRUD Operations, and InfinityFree Deployment
+          </h1>
+
+          <div class="bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 mb-6">
+            <p class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-1">Target Output & Project Scope</p>
+            <p class="text-sm sm:text-base font-semibold text-slate-900 dark:text-white">
+              Develop, connect, and deploy a complete, functional web-based application or information system with full PHP back-end functionality and complete CRUD (Create, Read, Update, Delete) operations connected to a MySQL/MariaDB database on InfinityFree—accompanied by an annotated System User Guide and an RBIM-style Promotional Video Presentation.
+            </p>
+          </div>
+
+          <!-- I. General Instructions -->
+          <div class="space-y-4">
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-lg bg-brand-600 text-white text-xs font-extrabold">I</span>
+              General Instructions
+            </h2>
+            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              For your Final Project, you are required to build a complete, dynamic web-based application or information system (not static HTML pages) powered by a <strong>PHP back-end</strong> and a relational database to store, retrieve, update, and delete records. You must complete the following three major development phases plus final presentation deliverables:
+            </p>
+
+            <!-- 3 Major Tasks Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <a href="#part-1" class="group bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50/70 dark:hover:bg-brand-950/30 border border-slate-200 dark:border-slate-700 hover:border-brand-300 dark:hover:border-brand-700 rounded-2xl p-5 transition">
+                <div class="w-9 h-9 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center mb-3 group-hover:scale-105 transition">1</div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1.5">Database Creation</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Design and build your relational project database using either <strong>XAMPP</strong> (MySQL/MariaDB with phpMyAdmin) or <strong>MySQL Server</strong>.
+                </p>
+              </a>
+
+              <a href="#part-2" class="group bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50/70 dark:hover:bg-brand-950/30 border border-slate-200 dark:border-slate-700 hover:border-brand-300 dark:hover:border-brand-700 rounded-2xl p-5 transition">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white font-bold text-sm flex items-center justify-center mb-3 group-hover:scale-105 transition">2</div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1.5">PHP Back-End & CRUD</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Develop full server-side logic in <strong>PHP (PDO or MySQLi)</strong> with user authentication, validation, and complete <strong>Create, Read, Update, and Delete</strong> operations.
+                </p>
+              </a>
+
+              <a href="#part-3" class="group bg-slate-50 dark:bg-slate-800/60 hover:bg-brand-50/70 dark:hover:bg-brand-950/30 border border-slate-200 dark:border-slate-700 hover:border-brand-300 dark:hover:border-brand-700 rounded-2xl p-5 transition">
+                <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-center mb-3 group-hover:scale-105 transition">3</div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base mb-1.5">InfinityFree Deployment</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  Deploy your complete PHP web system and MySQL database online using <strong>InfinityFree</strong> (<code class="font-mono text-xs">htdocs/</code>) so it is live via a public URL.
+                </p>
+              </a>
+            </div>
+
+            <!-- Expected Final Output -->
+            <div class="pt-4">
+              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">Expected Final Output</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Complete web-based app/system with PHP back-end</span>
+                </div>
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Properly structured relational database</span>
+                </div>
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Full PHP CRUD operations (Create, Read, Update, Delete)</span>
+                </div>
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>Live deployed website hosted on InfinityFree</span>
+                </div>
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>System User Guide with annotated app screenshots</span>
+                </div>
+                <div class="flex items-center gap-2.5 bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-emerald-900 dark:text-emerald-200">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  <span>RBIM-style Promotional Video Presentation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 1. DATABASE CREATION -->
+      <section id="part-1" class="scroll-mt-24 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Phase 01</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 1. Database Creation</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              You may choose either of the following approaches to create your local database. Choose <strong>only one method</strong>, depending on your available tools and development environment.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive Method Switcher Tabs -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+          <div class="p-3 bg-slate-100/80 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button id="btnOptionA" type="button" onclick="switchDbMethod('A')" class="py-3 px-4 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-xs border border-slate-200 dark:border-slate-700">
+              <span class="px-2 py-0.5 rounded bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs">Option A</span>
+              <span>Using XAMPP & phpMyAdmin</span>
+            </button>
+            <button id="btnOptionB" type="button" onclick="switchDbMethod('B')" class="py-3 px-4 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <span class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs">Option B</span>
+              <span>Using MySQL Server & Workbench</span>
+            </button>
+          </div>
+
+          <!-- OPTION A CONTENT -->
+          <div id="panelOptionA" class="p-6 sm:p-8 space-y-6">
+            <!-- Required Tools -->
+            <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">Required Tools (Option A)</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">XAMPP (PHP 8.x + MariaDB/MySQL)</span>
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">Web Browser (Google Chrome, Firefox, Edge)</span>
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">Visual Studio Code or another code editor</span>
+              </div>
+            </div>
+
+            <!-- Steps 1 to 7 -->
+            <div class="space-y-4">
+              <!-- Step 1 -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 1. Install XAMPP</h4>
+                <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                  <li>Visit the official Apache Friends website: <a href="https://www.apachefriends.org/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 underline font-medium">https://www.apachefriends.org/</a></li>
+                  <li>Download the XAMPP installer compatible with your operating system.</li>
+                  <li>Run the installer.</li>
+                  <li>Select the following components:
+                    <div class="flex flex-wrap gap-1.5 mt-1.5 ml-5">
+                      <span class="px-2.5 py-0.5 rounded-lg bg-brand-50 dark:bg-brand-950/70 text-brand-700 dark:text-brand-300 font-mono text-xs border border-brand-200 dark:border-brand-800">Apache</span>
+                      <span class="px-2.5 py-0.5 rounded-lg bg-brand-50 dark:bg-brand-950/70 text-brand-700 dark:text-brand-300 font-mono text-xs border border-brand-200 dark:border-brand-800">MySQL (MariaDB)</span>
+                      <span class="px-2.5 py-0.5 rounded-lg bg-brand-50 dark:bg-brand-950/70 text-brand-700 dark:text-brand-300 font-mono text-xs border border-brand-200 dark:border-brand-800">PHP</span>
+                      <span class="px-2.5 py-0.5 rounded-lg bg-brand-50 dark:bg-brand-950/70 text-brand-700 dark:text-brand-300 font-mono text-xs border border-brand-200 dark:border-brand-800">phpMyAdmin</span>
+                    </div>
+                  </li>
+                  <li>Complete the installation and open the <strong>XAMPP Control Panel</strong>.</li>
+                </ol>
+              </div>
+
+              <!-- Step 2 & 3 Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 2. Start Apache and MySQL</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Open the XAMPP Control Panel.</li>
+                    <li>Locate <strong>Apache</strong> and click <strong>Start</strong>.</li>
+                    <li>Locate <strong>MySQL</strong> and click <strong>Start</strong>.</li>
+                    <li>Make sure both services are running (highlighted green).</li>
+                  </ol>
+                </div>
+
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 3. Open phpMyAdmin</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Open your web browser.</li>
+                    <li>Enter the following URL and press Enter:
+                      <div class="mt-1.5 flex items-center justify-between bg-slate-900 text-emerald-400 font-mono text-xs px-3 py-2 rounded-xl">
+                        <span>http://localhost/phpmyadmin</span>
+                        <button type="button" onclick="copyText('http://localhost/phpmyadmin')" class="text-slate-400 hover:text-white text-xs underline">Copy</button>
+                      </div>
+                    </li>
+                    <li>The phpMyAdmin interface should appear.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+                <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 4. Create Your Database</h4>
+                <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                  <li>In phpMyAdmin, click the <strong>New</strong> option on the left panel.</li>
+                  <li>Enter your database name (Example: <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-brand-600 dark:text-brand-400">student_management_system</code>).</li>
+                  <li>Select the collation <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">utf8mb4_general_ci</code> if available.</li>
+                  <li>Click <strong>Create</strong>. Your database should now appear in the left panel.</li>
+                </ol>
+                <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3.5 text-xs sm:text-sm text-amber-900 dark:text-amber-200">
+                  <strong>Important:</strong> Use lowercase letters and underscores for database names. Avoid spaces and special characters.
+                </div>
+              </div>
+
+              <!-- Step 5 -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4">
+                <div>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 5. Create Your Database Tables</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Click the database you created and locate the <strong>Create table</strong> section.</li>
+                    <li>Enter the table name, specify the number of columns, and click <strong>Create</strong>.</li>
+                    <li>Define the necessary fields and their data types (Example: <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">students</code> table):</li>
+                  </ol>
+                </div>
+
+                <!-- Example Students Table Schema -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                  <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                    <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider">
+                      <tr>
+                        <th class="py-2.5 px-4 border-b border-slate-200 dark:border-slate-700">Field</th>
+                        <th class="py-2.5 px-4 border-b border-slate-200 dark:border-slate-700">Data Type</th>
+                        <th class="py-2.5 px-4 border-b border-slate-200 dark:border-slate-700">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-mono text-xs">
+                      <tr>
+                        <td class="py-2.5 px-4 font-bold text-brand-600 dark:text-brand-400">id</td>
+                        <td class="py-2.5 px-4">INT</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">Primary key (Enable <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 rounded">AUTO_INCREMENT</code>)</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2.5 px-4 font-semibold">student_number</td>
+                        <td class="py-2.5 px-4">VARCHAR(20)</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">Student number</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2.5 px-4 font-semibold">first_name</td>
+                        <td class="py-2.5 px-4">VARCHAR(100)</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">First name</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2.5 px-4 font-semibold">last_name</td>
+                        <td class="py-2.5 px-4">VARCHAR(100)</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">Last name</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2.5 px-4 font-semibold">email</td>
+                        <td class="py-2.5 px-4">VARCHAR(150)</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">Email address</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2.5 px-4 font-semibold">created_at</td>
+                        <td class="py-2.5 px-4">TIMESTAMP</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600 dark:text-slate-300">Date created</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Set <code class="font-mono text-xs">id</code> as the <strong>PRIMARY KEY</strong>, enable <strong>AUTO_INCREMENT</strong> for the <code class="font-mono text-xs">id</code> field, and click <strong>Save</strong>.
+                </p>
+              </div>
+
+              <!-- Step 6 & 7 Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 6. Insert Sample Records</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Select the <code class="font-mono text-xs">students</code> table.</li>
+                    <li>Click the <strong>Insert</strong> tab.</li>
+                    <li>Enter sample student information and click <strong>Go</strong>.</li>
+                    <li>Repeat until you have <strong>at least five sample records</strong>.</li>
+                  </ol>
+                </div>
+
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Step 7. Verify Your Database</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Click the <code class="font-mono text-xs">students</code> table.</li>
+                    <li>Select the <strong>Browse</strong> tab to check if records were saved.</li>
+                    <li>Review the table structure under the <strong>Structure</strong> tab.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Expected Result -->
+              <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-4 text-sm text-emerald-900 dark:text-emerald-200">
+                <strong>Expected Result:</strong> Your database should contain the required tables, properly defined fields, primary keys, and sample records.
+              </div>
+            </div>
+          </div>
+
+          <!-- OPTION B CONTENT -->
+          <div id="panelOptionB" class="hidden p-6 sm:p-8 space-y-6">
+            <!-- Required Tools -->
+            <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">Required Tools (Option B)</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">MySQL Community Server</span>
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">MySQL Workbench</span>
+                <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold">Visual Studio Code or another code editor</span>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Step 1 & 2 -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-2.5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 1. Download & Install MySQL</h4>
+                  <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Visit <a href="https://dev.mysql.com/downloads/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 underline font-medium">https://dev.mysql.com/downloads/</a></li>
+                    <li>Download MySQL Installer for your OS and run it.</li>
+                    <li>Select <strong>MySQL Server</strong> and <strong>MySQL Workbench</strong>.</li>
+                    <li>Choose default port <strong>3306</strong> and create a <strong>root password</strong>.</li>
+                  </ol>
+                  <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-2.5 text-xs text-amber-900 dark:text-amber-200">
+                    <strong>Important:</strong> Remember your MySQL username and password. You will need these credentials when connecting your PHP application.
+                  </div>
+                </div>
+
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-2.5">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 2. Open MySQL Workbench</h4>
+                  <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                    <li>Launch <strong>MySQL Workbench</strong>.</li>
+                    <li>Locate the MySQL connection created during installation.</li>
+                    <li>Click the connection and enter your <strong>root password</strong>.</li>
+                    <li>Wait for the <strong>SQL Editor</strong> to open.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Step 3: Create Database -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 3. Create Your Database</h4>
+                  <button type="button" onclick="copyCodeBlock('sqlStep3')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy SQL</button>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-300">Open a new SQL query tab, enter the commands below, and click the lightning icon or press <kbd class="px-1.5 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700">Ctrl + Enter</kbd>:</p>
+                <pre id="sqlStep3" class="bg-slate-950 text-emerald-400 font-mono text-xs sm:text-sm p-4 rounded-xl overflow-x-auto leading-relaxed">CREATE DATABASE student_management_system;
+USE student_management_system;</pre>
+              </div>
+
+              <!-- Step 4: Create Table -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 4. Create Your Table</h4>
+                  <button type="button" onclick="copyCodeBlock('sqlStep4')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy SQL</button>
+                </div>
+                <pre id="sqlStep4" class="bg-slate-950 text-emerald-400 font-mono text-xs sm:text-sm p-4 rounded-xl overflow-x-auto leading-relaxed">CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_number VARCHAR(20) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</pre>
+              </div>
+
+              <!-- Step 5: Insert Sample Records -->
+              <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 5. Insert Sample Records</h4>
+                  <button type="button" onclick="copyCodeBlock('sqlStep5')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy SQL</button>
+                </div>
+                <pre id="sqlStep5" class="bg-slate-950 text-emerald-400 font-mono text-xs sm:text-sm p-4 rounded-xl overflow-x-auto leading-relaxed">INSERT INTO students
+(student_number, first_name, last_name, email)
+VALUES
+('2026-001', 'Juan', 'Dela Cruz', 'juan@email.com'),
+('2026-002', 'Maria', 'Santos', 'maria@email.com'),
+('2026-003', 'Pedro', 'Reyes', 'pedro@email.com'),
+('2026-004', 'Ana', 'Garcia', 'ana@email.com'),
+('2026-005', 'Jose', 'Cruz', 'jose@email.com');</pre>
+              </div>
+
+              <!-- Step 6 & 7: Verify -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 6. Retrieve & Verify Records</h4>
+                    <button type="button" onclick="copyCodeBlock('sqlStep6')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy</button>
+                  </div>
+                  <pre id="sqlStep6" class="bg-slate-950 text-emerald-400 font-mono text-xs p-3 rounded-xl overflow-x-auto">SELECT * FROM students;</pre>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Check the output panel. It should display the five records you inserted.</p>
+                </div>
+
+                <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 7. Verify Database Structure</h4>
+                    <button type="button" onclick="copyCodeBlock('sqlStep7')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy</button>
+                  </div>
+                  <pre id="sqlStep7" class="bg-slate-950 text-emerald-400 font-mono text-xs p-3 rounded-xl overflow-x-auto">SHOW TABLES;
+DESCRIBE students;</pre>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Make sure that the database and table were successfully created.</p>
+                </div>
+              </div>
+
+              <!-- Expected Result -->
+              <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl p-4 text-sm text-emerald-900 dark:text-emerald-200">
+                <strong>Expected Result:</strong> Your MySQL Server should contain the database, table structure, primary key, and sample records.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 2. DATABASE CONNECTIVITY & PHP CRUD -->
+      <section id="part-2" class="scroll-mt-24 space-y-6">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Phase 02</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 2. PHP Back-End Functionality & CRUD Operations</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+            Build a complete web-based application or information system with full <strong>PHP back-end functionality</strong> so users can authenticate, submit forms, and perform complete <strong>Create, Read, Update, and Delete (CRUD)</strong> operations against your MySQL database.
+          </p>
+        </div>
+
+        <!-- Step 1: Project Folder Structure -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Step 1. Prepare Your PHP Project Folder</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Open Visual Studio Code, create a folder for your system inside <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">C:\xampp\htdocs\</code> (e.g., <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-brand-600 dark:text-brand-400">student-management-system</code>), and organize your back-end and front-end files:
+          </p>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="lg:col-span-6 bg-slate-950 text-slate-200 font-mono text-xs sm:text-sm p-5 rounded-2xl border border-slate-800 leading-relaxed overflow-x-auto">
+<pre>student-management-system/
+│
+├── index.php              <span class="text-slate-500"># Landing / Login page</span>
+├── login_process.php      <span class="text-slate-500"># PHP session authentication</span>
+├── logout.php             <span class="text-slate-500"># Session destroy</span>
+├── dashboard.php          <span class="text-slate-500"># System overview & metrics</span>
+├── students.php           <span class="text-slate-500"># READ: Display records</span>
+├── add_student.php        <span class="text-slate-500"># CREATE: Insert handler</span>
+├── edit_student.php       <span class="text-slate-500"># UPDATE: Edit handler</span>
+├── delete_student.php     <span class="text-slate-500"># DELETE: Remove handler</span>
+│
+├── <span class="text-amber-400">config/</span>
+│   └── <span class="text-emerald-400">database.php</span>       <span class="text-slate-500"># PDO / MySQLi connection</span>
+│
+├── <span class="text-amber-400">assets/</span>
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+└── <span class="text-amber-400">database/</span>
+    └── <span class="text-sky-400">student_management_system.sql</span></pre>
+            </div>
+
+            <div class="lg:col-span-6 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm">PHP System Architecture Breakdown</h4>
+                <ul class="space-y-1.5 text-xs sm:text-sm">
+                  <li><code class="font-mono text-brand-600 dark:text-brand-400">config/database.php</code> — Centralizes PDO or MySQLi database credentials and error handling.</li>
+                  <li><code class="font-mono text-brand-600 dark:text-brand-400">index.php / dashboard.php</code> — Provides user entry, session protection, and dashboard summaries.</li>
+                  <li><code class="font-mono text-brand-600 dark:text-brand-400">students / add / edit / delete</code> — Implements server-side form processing and prepared SQL queries for CRUD.</li>
+                  <li><code class="font-mono text-brand-600 dark:text-brand-400">database/*.sql</code> — Holds your exported SQL schema & seed data for InfinityFree import.</li>
+                </ul>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 italic">
+                Note: InfinityFree natively supports <strong>PHP 8.x and MySQL/MariaDB</strong> out of the box—making PHP PDO or MySQLi the recommended back-end stack for seamless deployment.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Steps 2, 3, 4: Interactive PHP Code Explorer -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+          <div class="p-6 sm:p-8 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Steps 2 – 4. PHP Database Connectivity, Testing & CRUD Handlers</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              Inspect the PHP PDO implementation files below. Click any tab to view and copy production-ready prepared statement examples.
+            </p>
+          </div>
+
+          <!-- Code File Tabs -->
+          <div class="px-6 sm:px-8 flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <button type="button" onclick="switchPhpTab('db')" id="phpTabBtn-db" class="php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-brand-600 text-white transition">
+              Step 2: config/database.php
+            </button>
+            <button type="button" onclick="switchPhpTab('test')" id="phpTabBtn-test" class="php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Step 3: test_connection.php
+            </button>
+            <button type="button" onclick="switchPhpTab('read')" id="phpTabBtn-read" class="php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Step 4: students.php (READ)
+            </button>
+            <button type="button" onclick="switchPhpTab('crud')" id="phpTabBtn-crud" class="php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+              Step 4b: add / edit / delete.php
+            </button>
+          </div>
+
+          <!-- Tab Panel: config/database.php -->
+          <div id="phpTabPanel-db" class="p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">config/database.php (PHP PDO)</span>
+              <button type="button" onclick="copyCodeBlock('codePhpDb')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy PHP Code</button>
+            </div>
+            <pre id="codePhpDb" class="bg-slate-950 text-sky-300 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">&lt;?php
+
+$host = "localhost";
+$dbname = "student_management_system";
+$username = "root";
+$password = "";
+
+try {
+
+    $conn = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $username,
+        $password
+    );
+
+    $conn-&gt;setAttribute(
+        PDO::ATTR_ERRMODE,
+        PDO::ERRMODE_EXCEPTION
+    );
+
+} catch (PDOException $e) {
+
+    die("Database connection failed.");
+
+}
+
+?&gt;</pre>
+
+            <!-- Explanation of Code Table -->
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider">
+                  <tr>
+                    <th class="py-2.5 px-4 border-b border-slate-200 dark:border-slate-700">Code</th>
+                    <th class="py-2.5 px-4 border-b border-slate-200 dark:border-slate-700">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-xs sm:text-sm">
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">$host</td><td class="py-2 px-4">Database server address (<code class="font-mono text-xs">localhost</code> locally, or InfinityFree MySQL Hostname in production)</td></tr>
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">$dbname</td><td class="py-2 px-4">Name of your database</td></tr>
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">$username</td><td class="py-2 px-4">Database username</td></tr>
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">$password</td><td class="py-2 px-4">Database password</td></tr>
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">new PDO()</td><td class="py-2 px-4">Establishes a secure UTF-8 database connection</td></tr>
+                  <tr><td class="py-2 px-4 font-mono font-bold text-brand-600 dark:text-brand-400">try-catch</td><td class="py-2 px-4">Catches and handles possible connection errors gracefully</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3.5 text-xs sm:text-sm text-amber-900 dark:text-amber-200">
+              <strong>Important:</strong> For a local XAMPP installation, the default credentials are <code class="font-mono">root</code> with an empty password (<code class="font-mono">""</code>). When deploying to InfinityFree in Part 3, you will update these four variables with your vPanel MySQL credentials.
+            </div>
+          </div>
+
+          <!-- Tab Panel: test_connection.php -->
+          <div id="phpTabPanel-test" class="hidden p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">test_connection.php</span>
+              <button type="button" onclick="copyCodeBlock('codePhpTest')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy PHP Code</button>
+            </div>
+            <pre id="codePhpTest" class="bg-slate-950 text-sky-300 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">&lt;?php
+
+require_once "config/database.php";
+
+echo "Your PHP web application is now connected to the database!";
+
+?&gt;</pre>
+            <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 text-sm">
+              <p class="font-bold text-slate-900 dark:text-white">How to Test Locally (XAMPP):</p>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600 dark:text-slate-300 text-xs sm:text-sm">
+                <li>Place your project folder inside <code class="font-mono bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">C:\xampp\htdocs\</code></li>
+                <li>Start <strong>Apache</strong> and <strong>MySQL</strong> using the XAMPP Control Panel.</li>
+                <li>Open your browser and enter: <code class="font-mono text-brand-600 dark:text-brand-400">http://localhost/student-management-system/test_connection.php</code></li>
+              </ol>
+              <p class="text-xs text-emerald-700 dark:text-emerald-300 font-semibold pt-1">
+                Expected Result: The browser displays the successful database connection message without PDO errors.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tab Panel: students.php -->
+          <div id="phpTabPanel-read" class="hidden p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">students.php (READ — Retrieve Data from Database)</span>
+              <button type="button" onclick="copyCodeBlock('codePhpRead')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy PHP Code</button>
+            </div>
+            <pre id="codePhpRead" class="bg-slate-950 text-sky-300 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">&lt;?php
+
+require_once "config/database.php";
+
+$sql = "SELECT * FROM students ORDER BY id DESC";
+$stmt = $conn-&gt;prepare($sql);
+$stmt-&gt;execute();
+$students = $stmt-&gt;fetchAll(PDO::FETCH_ASSOC);
+
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Student Records&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;Student Records&lt;/h1&gt;
+    &lt;a href="add_student.php"&gt;+ Add New Student&lt;/a&gt;
+
+    &lt;table border="1" cellpadding="10"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;ID&lt;/th&gt;
+            &lt;th&gt;Student Number&lt;/th&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Email&lt;/th&gt;
+            &lt;th&gt;Actions&lt;/th&gt;
+        &lt;/tr&gt;
+
+        &lt;?php foreach ($students as $student): ?&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;?= htmlspecialchars($student['id']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= htmlspecialchars($student['student_number']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;
+                &lt;?= htmlspecialchars($student['first_name']) ?&gt;
+                &lt;?= htmlspecialchars($student['last_name']) ?&gt;
+            &lt;/td&gt;
+            &lt;td&gt;&lt;?= htmlspecialchars($student['email'] ?? '') ?&gt;&lt;/td&gt;
+            &lt;td&gt;
+                &lt;a href="edit_student.php?id=&lt;?= $student['id'] ?&gt;"&gt;Edit&lt;/a&gt; |
+                &lt;a href="delete_student.php?id=&lt;?= $student['id'] ?&gt;"&gt;Delete&lt;/a&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;?php endforeach; ?&gt;
+    &lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+              Open <code class="font-mono text-brand-600 dark:text-brand-400">http://localhost/student-management-system/students.php</code>. Always sanitize output using <code class="font-mono text-xs">htmlspecialchars()</code> to prevent Cross-Site Scripting (XSS).
+            </p>
+          </div>
+
+          <!-- Tab Panel: Create / Update / Delete PHP -->
+          <div id="phpTabPanel-crud" class="hidden p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">PHP Prepared Statements for CREATE, UPDATE & DELETE</span>
+              <button type="button" onclick="copyCodeBlock('codePhpCrud')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy PHP Code</button>
+            </div>
+            <pre id="codePhpCrud" class="bg-slate-950 text-sky-300 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">&lt;?php
+require_once "config/database.php";
+
+// 1. CREATE (add_student.php)
+if ($_SERVER["REQUEST_METHOD"] === "POST" &amp;&amp; isset($_POST["create"])) {
+    $stmt = $conn-&gt;prepare("INSERT INTO students (student_number, first_name, last_name, email) VALUES (?, ?, ?, ?)");
+    $stmt-&gt;execute([
+        trim($_POST["student_number"]),
+        trim($_POST["first_name"]),
+        trim($_POST["last_name"]),
+        trim($_POST["email"])
+    ]);
+    header("Location: students.php?status=created");
+    exit;
+}
+
+// 2. UPDATE (edit_student.php)
+if ($_SERVER["REQUEST_METHOD"] === "POST" &amp;&amp; isset($_POST["update"])) {
+    $stmt = $conn-&gt;prepare("UPDATE students SET student_number = ?, first_name = ?, last_name = ?, email = ? WHERE id = ?");
+    $stmt-&gt;execute([
+        trim($_POST["student_number"]),
+        trim($_POST["first_name"]),
+        trim($_POST["last_name"]),
+        trim($_POST["email"]),
+        intval($_POST["id"])
+    ]);
+    header("Location: students.php?status=updated");
+    exit;
+}
+
+// 3. DELETE (delete_student.php)
+if (isset($_GET["delete_id"])) {
+    $stmt = $conn-&gt;prepare("DELETE FROM students WHERE id = ?");
+    $stmt-&gt;execute([intval($_GET["delete_id"])]);
+    header("Location: students.php?status=deleted");
+    exit;
+}
+?&gt;</pre>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+              Using <strong>PDO Prepared Statements</strong> (<code class="font-mono text-xs">prepare()</code> + <code class="font-mono text-xs">execute()</code>) protects your back-end against SQL Injection attacks.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 5 & Interactive CRUD Simulator -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Step 5. Implement Complete Database Operations (CRUD)</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              Your web-based application/system must demonstrate all four core back-end database operations using your own project's actual tables and forms:
+            </p>
+          </div>
+
+          <!-- 4 CRUD Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">CREATE (<code class="font-mono">INSERT</code>)</span>
+              <p class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-1">Add new records</p>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Submit PHP form data into MySQL tables.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800/60">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-sky-700 dark:text-sky-400">READ (<code class="font-mono">SELECT</code>)</span>
+              <p class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-1">Retrieve & display</p>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Fetch records dynamically into tables, cards, or reports.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">UPDATE (<code class="font-mono">UPDATE</code>)</span>
+              <p class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-1">Modify existing records</p>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Pre-fill edit form and save updated values.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-rose-700 dark:text-rose-400">DELETE (<code class="font-mono">DELETE</code>)</span>
+              <p class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-1">Remove existing records</p>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Delete or archive records safely by primary key ID.</p>
+            </div>
+          </div>
+
+          <!-- Interactive Live CRUD Sandbox Preview -->
+          <div class="border border-brand-200 dark:border-brand-800/60 bg-slate-50 dark:bg-slate-800/40 rounded-2xl p-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+                  <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                  Interactive CRUD Behavior Preview
+                </span>
+                <h4 class="font-bold text-slate-900 dark:text-white text-base">Simulated <code class="font-mono text-sm">students</code> Table Interface</h4>
+              </div>
+              <button type="button" onclick="resetCrudDemo()" class="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                Reset Sample Data
+              </button>
+            </div>
+
+            <!-- Add / Edit Form -->
+            <form id="crudDemoForm" onsubmit="handleCrudSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+              <input type="hidden" id="crudEditId" value="">
+              <input type="text" id="crudStudentNum" required placeholder="Student No. (e.g. 2026-006)" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:border-brand-500">
+              <input type="text" id="crudFirstName" required placeholder="First Name" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:border-brand-500">
+              <input type="text" id="crudLastName" required placeholder="Last Name" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:border-brand-500">
+              <input type="email" id="crudEmail" required placeholder="Email Address" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:border-brand-500">
+              <div class="flex gap-1.5">
+                <button type="submit" id="crudSubmitBtn" class="flex-1 py-2 px-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold transition">
+                  + Add
+                </button>
+                <button type="button" id="crudCancelEditBtn" onclick="cancelCrudEdit()" class="hidden py-2 px-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-xs font-semibold">
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+            <!-- Live Generated SQL Preview -->
+            <div class="bg-slate-950 text-emerald-400 font-mono text-xs px-3.5 py-2.5 rounded-xl flex items-center justify-between gap-2 overflow-x-auto">
+              <span id="crudSqlPreview">SELECT * FROM students ORDER BY id ASC;</span>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 shrink-0">Equivalent SQL</span>
+            </div>
+
+            <!-- Simulated Database Table -->
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+              <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider">
+                  <tr>
+                    <th class="py-2.5 px-3">ID</th>
+                    <th class="py-2.5 px-3">Student Number</th>
+                    <th class="py-2.5 px-3">Full Name</th>
+                    <th class="py-2.5 px-3">Email</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="crudTableBody" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Step 6 & Back-End Stack Notes -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+            <div class="lg:col-span-5 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-2.5">
+              <h4 class="font-bold text-slate-900 dark:text-white text-base">Step 6. Test Your Application Locally</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Before deploying to InfinityFree, verify:</p>
+              <ul class="space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Database connection is working cleanly.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Application retrieves and filters database records.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Users can add, view, update, and delete records.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Forms validate required inputs and prevent duplicates.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> App displays clear feedback and error messages.</li>
+              </ul>
+            </div>
+
+            <div class="lg:col-span-7 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+              <h4 class="font-bold text-slate-900 dark:text-white text-base">PHP Database Drivers & InfinityFree Compatibility</h4>
+              <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="bg-slate-100 dark:bg-slate-800 font-bold uppercase text-[11px]">
+                    <tr>
+                      <th class="py-2 px-3">Technology</th>
+                      <th class="py-2 px-3">Database Connectivity</th>
+                      <th class="py-2 px-3">InfinityFree Support</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                    <tr><td class="py-2 px-3 font-semibold">PHP (PDO)</td><td class="py-2 px-3 font-mono">new PDO("mysql:...")</td><td class="py-2 px-3 text-emerald-600 dark:text-emerald-400 font-semibold">Fully Supported (Recommended)</td></tr>
+                    <tr><td class="py-2 px-3 font-semibold">PHP (MySQLi)</td><td class="py-2 px-3 font-mono">new mysqli(...) / mysqli_connect()</td><td class="py-2 px-3 text-emerald-600 dark:text-emerald-400 font-semibold">Fully Supported</td></tr>
+                    <tr><td class="py-2 px-3 font-semibold">HTML/CSS/JS Only</td><td class="py-2 px-3 font-mono">Client-side only (No DB driver)</td><td class="py-2 px-3 text-rose-600 dark:text-rose-400 font-semibold">Not Accepted (No Back-End)</td></tr>
+                    <tr><td class="py-2 px-3 font-semibold">Node.js / Python / Java</td><td class="py-2 px-3 font-mono">Custom server runtimes</td><td class="py-2 px-3 text-amber-600 dark:text-amber-400 font-semibold">Not Supported on InfinityFree</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 rounded-xl p-3 text-xs text-rose-900 dark:text-rose-200">
+                <strong>Important:</strong> InfinityFree provides standard LAMP/PHP + MySQL hosting. Use <strong>PHP (PDO or MySQLi)</strong> with MySQL/MariaDB so your back-end runs smoothly on InfinityFree servers.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 3. HOSTING AND DEPLOYMENT USING INFINITYFREE -->
+      <section id="part-3" class="scroll-mt-24 space-y-6">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Phase 03</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 3. Hosting and Deployment Using InfinityFree</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+            After completing and testing your PHP web application locally, deploy it online for free using <strong>InfinityFree</strong> so it is accessible through a live public website URL (<code class="font-mono text-xs">.infinityfreeapp.com</code>, <code class="font-mono text-xs">.rf.gd</code>, or custom domain) rather than only through <code class="font-mono text-xs">localhost</code>.
+          </p>
+        </div>
+
+        <!-- Required Materials -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 flex flex-wrap items-center gap-2.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Required Materials:</span>
+          <span class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">Completed PHP web system</span>
+          <span class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">Database backup file (.sql)</span>
+          <span class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">Free InfinityFree account</span>
+          <span class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">Free InfinityFree subdomain (e.g. yourapp.infinityfreeapp.com)</span>
+        </div>
+
+        <!-- 8 Deployment Steps -->
+        <div class="space-y-4">
+          <!-- Step 1: Prepare & Export SQL -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Prepare Your Project & Export Database (.sql)</h3>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Open your project folder in Visual Studio Code, remove unnecessary/temporary files, verify case-sensitive file paths (InfinityFree runs on Linux servers where <code class="font-mono text-xs">Dashboard.php</code> differs from <code class="font-mono text-xs">dashboard.php</code>), and export your database backup (e.g., <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">student_management_system.sql</code>):
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Via XAMPP / phpMyAdmin</h4>
+                <ol class="list-decimal list-inside space-y-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  <li>Open <code class="font-mono text-xs">http://localhost/phpmyadmin</code></li>
+                  <li>Select your project database.</li>
+                  <li>Click the <strong>Export</strong> tab.</li>
+                  <li>Select <strong>Quick</strong> as the export method and <strong>SQL</strong> as format.</li>
+                  <li>Click <strong>Export</strong> and save the <code class="font-mono text-xs">.sql</code> file.</li>
+                </ol>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Via MySQL Workbench</h4>
+                <ol class="list-decimal list-inside space-y-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  <li>Open MySQL Workbench & connect to server.</li>
+                  <li>Select <strong>Server → Data Export</strong>.</li>
+                  <li>Select your project database.</li>
+                  <li>Choose <strong>Export to Self-Contained File</strong>.</li>
+                  <li>Specify filename/location and click <strong>Start Export</strong>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 & Step 3 -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900 dark:text-white">Create an Account & Hosting Account in InfinityFree</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                    Visit <a href="https://www.infinityfree.com/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 underline font-medium">https://www.infinityfree.com/</a>, sign up/log in to the <strong>Client Area</strong>, click <strong>Create Account</strong>, choose a free subdomain (e.g., <code class="font-mono text-xs">yourproject.infinityfreeapp.com</code>), and open the <strong>Control Panel (vPanel)</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">3</span>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Upload Your Web Application to <code class="font-mono text-base text-brand-600 dark:text-brand-400">htdocs</code></h3>
+              </div>
+              <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-600 dark:text-slate-300">
+                <li>In InfinityFree Client Area or Control Panel (vPanel), open <strong>File Manager</strong> (Monsta FTP) or connect using an FTP client like <strong>FileZilla</strong> using your FTP credentials from Account Details.</li>
+                <li>Open the <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded font-bold">htdocs</code> folder (InfinityFree's web root directory—do <strong>not</strong> upload outside <code class="font-mono text-xs">htdocs</code>).</li>
+                <li>Delete the default <code class="font-mono text-xs">index2.html</code> placeholder file inside <code class="font-mono text-xs">htdocs</code>.</li>
+                <li>Upload your project files (or upload a ZIP archive under 10 MB and click <strong>Extract</strong>, or upload folders directly via FileZilla) so your entry file (<code class="font-mono text-xs">index.php</code>) sits directly inside <code class="font-mono text-xs">htdocs/</code>.</li>
+              </ol>
+
+              <!-- Visual Directory Comparison -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div class="rounded-2xl border-2 border-emerald-500/50 bg-emerald-50/40 dark:bg-emerald-950/20 p-4">
+                  <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-bold text-xs uppercase tracking-wider mb-2">
+                    <span>✓ Correct InfinityFree Structure</span>
+                  </div>
+                  <pre class="bg-slate-950 text-emerald-400 font-mono text-xs p-3.5 rounded-xl overflow-x-auto leading-relaxed">htdocs/
+├── index.php
+├── dashboard.php
+├── students.php
+├── config/
+│   └── database.php
+└── assets/</pre>
+                </div>
+
+                <div class="rounded-2xl border-2 border-rose-500/50 bg-rose-50/40 dark:bg-rose-950/20 p-4">
+                  <div class="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-bold text-xs uppercase tracking-wider mb-2">
+                    <span>✗ Avoid Nested Folder Inside htdocs</span>
+                  </div>
+                  <pre class="bg-slate-950 text-rose-400 font-mono text-xs p-3.5 rounded-xl overflow-x-auto leading-relaxed">htdocs/
+└── student-management-system/
+    └── index.php
+<span class="text-slate-500"># Causes unwanted subdirectory URL</span></pre>
+                </div>
+              </div>
+
+              <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3 text-xs text-amber-900 dark:text-amber-200">
+                <strong>InfinityFree Upload Tip:</strong> InfinityFree enforces a <strong>10 MB maximum single-file upload limit</strong> on web servers. Keep assets optimized and use <strong>FileZilla FTP</strong> if uploading large project folders.
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 & Step 5: InfinityFree Database Creation & Import -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-5">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">4</span>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Create a MySQL Database in InfinityFree (vPanel)</h3>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Your local database does not transfer automatically. Open your InfinityFree <strong>Control Panel (vPanel) → Databases → MySQL Databases</strong>, enter a short database name (e.g., <code class="font-mono text-xs">studentdb</code>), and click <strong>Create Database</strong>. InfinityFree automatically assigns your account username and password to it.
+            </p>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+              <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                <thead class="bg-slate-100 dark:bg-slate-800 font-bold uppercase text-[11px]">
+                  <tr>
+                    <th class="py-2.5 px-4">Required Information</th>
+                    <th class="py-2.5 px-4">InfinityFree vPanel Example</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                  <tr><td class="py-2 px-4 font-semibold">MySQL Host Name</td><td class="py-2 px-4 font-mono text-xs text-brand-600 dark:text-brand-400">sql305.infinityfree.com (NEVER use localhost!)</td></tr>
+                  <tr><td class="py-2 px-4 font-semibold">MySQL Database Name</td><td class="py-2 px-4 font-mono text-xs text-brand-600 dark:text-brand-400">if0_38492015_studentdb</td></tr>
+                  <tr><td class="py-2 px-4 font-semibold">MySQL User Name</td><td class="py-2 px-4 font-mono text-xs text-brand-600 dark:text-brand-400">if0_38492015</td></tr>
+                  <tr><td class="py-2 px-4 font-semibold">MySQL Password</td><td class="py-2 px-4 font-mono text-xs">Your InfinityFree Hosting Account Password (found in Client Area → Account Details)</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">5</span>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Import Your Local Database into InfinityFree phpMyAdmin</h3>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                In <strong>vPanel → MySQL Databases</strong>, locate your newly created database in the <strong>Current Databases</strong> list and click <strong>phpMyAdmin</strong> (or <strong>Admin</strong>). Inside phpMyAdmin, select your <code class="font-mono text-xs">if0_XXXXXXX_dbname</code> database on the left, open the <strong>Import</strong> tab, choose your exported <code class="font-mono text-xs">.sql</code> file, and click <strong>Go / Import</strong>.
+              </p>
+              <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3 text-xs text-amber-900 dark:text-amber-200">
+                <strong>Important:</strong> Before importing, remove any <code class="font-mono">CREATE DATABASE ...;</code> or <code class="font-mono">USE ...;</code> statements at the top of your <code class="font-mono">.sql</code> file if phpMyAdmin reports a privilege error, since InfinityFree restricts creating databases via SQL queries.
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6: Interactive Environment Config Diff/Toggle -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">6</span>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900 dark:text-white">Update Your Database Connection Settings</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Compare Local XAMPP vs. Production InfinityFree configuration</p>
+                </div>
+              </div>
+
+              <div class="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700 self-start">
+                <button type="button" id="envBtnProd" onclick="switchEnvConfig('prod')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white transition">
+                  After Deployment (InfinityFree)
+                </button>
+                <button type="button" id="envBtnLocal" onclick="switchEnvConfig('local')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 transition">
+                  Before (Local XAMPP)
+                </button>
+              </div>
+            </div>
+
+            <div id="envPanelProd" class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">Production config/database.php (InfinityFree)</span>
+                <button type="button" onclick="copyCodeBlock('codeEnvProd')" class="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy Production Code</button>
+              </div>
+              <pre id="codeEnvProd" class="bg-slate-950 text-emerald-400 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">&lt;?php
+
+$host = "sql305.infinityfree.com";          // Your exact InfinityFree MySQL Hostname
+$dbname = "if0_38492015_studentdb";         // Your prefixed InfinityFree Database Name
+$username = "if0_38492015";                 // Your InfinityFree MySQL Username
+$password = "YOUR_HOSTING_ACCOUNT_PASSWORD"; // Your InfinityFree vPanel/Hosting Password
+
+try {
+
+    $conn = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $username,
+        $password
+    );
+
+    $conn-&gt;setAttribute(
+        PDO::ATTR_ERRMODE,
+        PDO::ERRMODE_EXCEPTION
+    );
+
+} catch (PDOException $e) {
+
+    error_log($e-&gt;getMessage());
+
+    die("Unable to connect to the database.");
+
+}
+
+?&gt;</pre>
+            </div>
+
+            <div id="envPanelLocal" class="hidden space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-amber-600 dark:text-amber-400 font-semibold">Local Development config/database.php (XAMPP)</span>
+                <button type="button" onclick="copyCodeBlock('codeEnvLocal')" class="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-brand-600 hover:text-white text-xs font-semibold transition">Copy Local Code</button>
+              </div>
+              <pre id="codeEnvLocal" class="bg-slate-950 text-amber-300 font-mono text-xs sm:text-sm p-4 rounded-2xl overflow-x-auto leading-relaxed">$host = "localhost";
+$dbname = "student_management_system";
+$username = "root";
+$password = "";</pre>
+            </div>
+
+            <p class="text-xs text-slate-600 dark:text-slate-300">
+              Edit <code class="font-mono">htdocs/config/database.php</code> directly in InfinityFree's File Manager (or re-upload the updated file) with your exact vPanel MySQL credentials.
+            </p>
+          </div>
+
+          <!-- Step 7 & Step 8 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-2.5">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">7</span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">Test Your Deployed Website</h3>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                Open your InfinityFree subdomain URL in a browser, verify the homepage loads, test login/registration, perform <strong>Create, Read, Update, and Delete</strong> operations directly against the live InfinityFree MySQL database, verify all CSS/JS/image paths, and test responsiveness on both <strong>desktop and mobile devices</strong>.
+              </p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-2.5">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-brand-600 text-white font-bold text-sm flex items-center justify-center shrink-0">8</span>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">Activate Free SSL Certificate (HTTPS)</h3>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                In your InfinityFree <strong>Client Area</strong>, navigate to the <strong>Free SSL Certificates</strong> tab, click <strong>New SSL Certificate</strong> for your domain, configure automatic CNAME records (or wait for propagation), install the certificate, and verify secure access via <code class="font-mono text-xs text-emerald-600 dark:text-emerald-400">https://yourproject.infinityfreeapp.com</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 4. FINAL PROJECT SUBMISSION REQUIREMENTS -->
+      <section id="submission" class="scroll-mt-24 space-y-6">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Phase 04</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 4. Final Project Submission Requirements</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+            After completing and deploying your PHP web-based system on InfinityFree, prepare all required technical deliverables, the annotated System User Guide, the RBIM-style Promotional Video Presentation, and your final submission package.
+          </p>
+        </div>
+
+        <!-- A. Required Deliverables -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">A. Required Deliverables</h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider">
+                <tr>
+                  <th class="py-2.5 px-4 w-16">No.</th>
+                  <th class="py-2.5 px-4">Deliverable</th>
+                  <th class="py-2.5 px-4">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                <tr><td class="py-2.5 px-4 font-mono font-bold">1</td><td class="py-2.5 px-4 font-bold">Complete PHP Project Source Code</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Full web-based application/system folder containing PHP back-end scripts, UI pages, and assets.</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">2</td><td class="py-2.5 px-4 font-bold">Database File (.sql)</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Exported <code class="font-mono text-xs">.sql</code> database backup with schema and sample records.</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">3</td><td class="py-2.5 px-4 font-bold">Database Documentation</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Entity-Relationship Diagram (ERD), relational schema, and data dictionary.</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">4</td><td class="py-2.5 px-4 font-bold">Working PHP CRUD System</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Full back-end Create, Read, Update, and Delete operations connected to MySQL.</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">5</td><td class="py-2.5 px-4 font-bold">Live Hosted Website (InfinityFree)</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Accessible public URL deployed on InfinityFree (<code class="font-mono text-xs">htdocs/</code>).</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">6</td><td class="py-2.5 px-4 font-bold">System User Guide (Screenshots)</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">Step-by-step illustrated manual (<code class="font-mono text-xs">System_User_Guide.pdf</code>) featuring annotated screenshots of every page, module, and CRUD action of your web app, plus InfinityFree deployment screenshots.</td></tr>
+                <tr><td class="py-2.5 px-4 font-mono font-bold">7</td><td class="py-2.5 px-4 font-bold">Promotional Video Presentation</td><td class="py-2.5 px-4 text-slate-600 dark:text-slate-300">3–5 minute RBIM-style promotional & system walkthrough video (<code class="font-mono text-xs">System_Promotional_Video.mp4</code> or accessible YouTube/Google Drive link).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- B. System User Guide & Promotional Video Presentation Guidelines -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">B. System User Guide & RBIM-Style Promotional Video Guidelines</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              In addition to your live InfinityFree deployment, your group must submit both an illustrated <strong>System User Guide</strong> and a polished <strong>Promotional Video Presentation</strong> modeled after the <strong>RBIM (Registry of Barangay Inhabitants and Migrants)</strong> system presentation.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left Card: System User Guide -->
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-brand-600 text-white flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">1. System User Guide (<code class="font-mono text-xs text-brand-600 dark:text-brand-400">System_User_Guide.pdf</code>)</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Annotated screenshots formatted as an end-user manual</p>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Capture clear, full-window screenshots of your actual web-based system and label buttons, forms, and workflows with callouts and brief step-by-step instructions:
+              </p>
+              <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <li class="flex items-start gap-2"><span class="text-brand-600 dark:text-brand-400 font-bold">•</span> <strong>Section 1 — System Access & Navigation:</strong> Landing page, Registration/Login screens, and Main Dashboard overview.</li>
+                <li class="flex items-start gap-2"><span class="text-brand-600 dark:text-brand-400 font-bold">•</span> <strong>Section 2 — Create Operation (Adding Records):</strong> Step-by-step screenshots of filling out forms and confirmation alerts.</li>
+                <li class="flex items-start gap-2"><span class="text-brand-600 dark:text-brand-400 font-bold">•</span> <strong>Section 3 — Read Operation (Viewing & Searching):</strong> Data tables, search/filter controls, and detailed record views.</li>
+                <li class="flex items-start gap-2"><span class="text-brand-600 dark:text-brand-400 font-bold">•</span> <strong>Section 4 — Update & Delete Operations:</strong> Editing existing records, delete confirmation prompts, and updated table state.</li>
+                <li class="flex items-start gap-2"><span class="text-brand-600 dark:text-brand-400 font-bold">•</span> <strong>Section 5 — InfinityFree Deployment Proof:</strong> Files uploaded inside <code class="font-mono text-xs">htdocs/</code>, imported tables in InfinityFree phpMyAdmin, and live browser URL bar.</li>
+              </ul>
+            </div>
+
+            <!-- Right Card: Promotional Video Presentation (RBIM Style) -->
+            <div class="p-5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800/60 space-y-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">2. Promotional Video Presentation (RBIM System Style)</h4>
+                  <p class="text-xs text-indigo-700 dark:text-indigo-300 font-medium">Duration: 3–5 Minutes • Format: 1080p MP4 / Unlisted YouTube or Drive Link</p>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Create an engaging promotional & product showcase video modeled after the <strong>RBIM (Registry of Barangay Inhabitants and Migrants)</strong> system presentation—blending storytelling, clear voiceover/captions, and live screen-recorded walkthroughs:
+              </p>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-indigo-200/70 dark:border-indigo-800/50">
+                  <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">[0:00 – 0:45]</span> <strong>Hook & Problem Statement:</strong> Introduce the real-world manual workflow challenges your target organization/community faces.
+                </div>
+                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-indigo-200/70 dark:border-indigo-800/50">
+                  <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">[0:45 – 1:30]</span> <strong>System Introduction & Objectives:</strong> Present your system title, logo, target users, and how your PHP + MySQL solution solves the problem.
+                </div>
+                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-indigo-200/70 dark:border-indigo-800/50">
+                  <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">[1:30 – 3:45]</span> <strong>Live System & CRUD Walkthrough:</strong> Screen-record your live InfinityFree-hosted app demonstrating Login, Dashboard, <strong>Create, Read, Update, and Delete</strong> in action.
+                </div>
+                <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-indigo-200/70 dark:border-indigo-800/50">
+                  <span class="font-mono font-bold text-indigo-600 dark:text-indigo-400">[3:45 – 4:30]</span> <strong>System Benefits, Impact & Call to Action:</strong> Summarize speed, accuracy, security, and show your live InfinityFree URL and team credits.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C. Final Submission Checklist (Interactive Project Completion Tracker) -->
+        <div id="tracker-section" class="scroll-mt-24 bg-white dark:bg-slate-900 rounded-3xl border border-brand-200 dark:border-brand-800/60 p-6 sm:p-8 shadow-xs space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">C. Final Submission Checklist — Project Completion Tracker</h3>
+              <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Track your progress across all 16 project milestones (automatically saved in your browser).</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span id="trackerCounterBadge" class="px-3.5 py-1.5 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 font-mono text-xs sm:text-sm font-bold border border-brand-200 dark:border-brand-800">
+                0/16 completed
+              </span>
+              <button type="button" onclick="resetChecklist()" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white text-xs font-semibold transition">
+                Reset checklist
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+            <div id="trackerMainBar" class="h-full bg-gradient-to-r from-brand-600 to-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <!-- 16 Checkboxes Grid -->
+          <div id="checklistContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+        </div>
+
+        <!-- D. Submission Format & Interactive Project_Details.txt Builder -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">D. Submission Format & <code class="font-mono text-base text-brand-600 dark:text-brand-400">Project_Details.txt</code> Generator</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+              Submit your final project through the designated submission platform or Google Classroom using this exact folder structure:
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Folder Tree -->
+            <div class="lg:col-span-5 bg-slate-950 text-slate-200 font-mono text-xs sm:text-sm p-5 rounded-2xl border border-slate-800 leading-relaxed overflow-x-auto">
+<pre><span class="text-brand-400 font-bold">FINAL_PROJECT/</span>
+│
+├── <span class="text-amber-400">01_SOURCE_CODE/</span>
+│   └── complete PHP project files
+│
+├── <span class="text-amber-400">02_DATABASE/</span>
+│   └── database.sql
+│
+├── <span class="text-amber-400">03_DOCUMENTATION/</span>
+│   ├── ERD.png
+│   ├── Relational_Schema.pdf
+│   ├── Data_Dictionary.pdf
+│   └── <span class="text-sky-400">System_User_Guide.pdf</span>
+│
+├── <span class="text-amber-400">04_PROMOTIONAL_VIDEO/</span>
+│   └── <span class="text-purple-400">System_Promotional_Video.mp4</span>
+│       <span class="text-slate-500">(or Video_Link.txt if >100MB)</span>
+│
+└── <span class="text-amber-400">05_PROJECT_INFORMATION/</span>
+    └── <span class="text-emerald-400">Project_Details.txt</span></pre>
+            </div>
+
+            <!-- Interactive Project_Details.txt Generator -->
+            <div class="lg:col-span-7 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Interactive <code class="font-mono">Project_Details.txt</code> Builder</h4>
+                <span class="text-[11px] font-semibold text-brand-600 dark:text-brand-400">Live Preview & Download</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Project / System Title</label>
+                  <input type="text" id="pdTitle" oninput="updateProjectDetailsPreview()" placeholder="e.g. Barangay Information & Records System" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Year and Section</label>
+                  <input type="text" id="pdSection" oninput="updateProjectDetailsPreview()" placeholder="e.g. BSIT 2-A" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Group Members</label>
+                  <input type="text" id="pdMembers" oninput="updateProjectDetailsPreview()" placeholder="e.g. Juan Dela Cruz, Maria Santos, Pedro Reyes" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Back-End & Front-End Stack</label>
+                  <input type="text" id="pdLang" oninput="updateProjectDetailsPreview()" value="PHP (PDO), HTML5, CSS3, JavaScript" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Database Management System</label>
+                  <input type="text" id="pdDbms" oninput="updateProjectDetailsPreview()" value="MySQL / MariaDB" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Live Website URL (InfinityFree)</label>
+                  <input type="url" id="pdUrl" oninput="updateProjectDetailsPreview()" placeholder="https://yourproject.infinityfreeapp.com" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Promotional Video URL (YouTube / Drive)</label>
+                  <input type="url" id="pdVideoUrl" oninput="updateProjectDetailsPreview()" placeholder="https://youtu.be/..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500">
+                </div>
+              </div>
+
+              <pre id="projectDetailsPreview" class="bg-slate-950 text-emerald-400 font-mono text-xs p-3.5 rounded-xl overflow-x-auto leading-relaxed"></pre>
+
+              <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="copyCodeBlock('projectDetailsPreview')" class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-xs font-bold transition">
+                  Copy Text
+                </button>
+                <button type="button" onclick="downloadProjectDetails()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition">
+                  Download Project_Details.txt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 5. IMPORTANT REMINDERS -->
+      <section id="reminders" class="scroll-mt-24 space-y-6">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Guidelines & Integrity</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 5. Important Reminders</h2>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">1. Build a complete web-based system</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Static HTML/CSS templates without working PHP back-end scripts and database CRUD operations will not be accepted.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">2. Do not submit the sample student table</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">The sample <code class="font-mono text-xs">students</code> schema in this guide is for demonstration only. Design tables tailored to your proposed system.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">3. Test locally before InfinityFree upload</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Verify every PHP form, session login, and CRUD action on XAMPP before uploading to <code class="font-mono text-xs">htdocs/</code>.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">4. Use exact InfinityFree MySQL hostnames</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Never leave <code class="font-mono text-xs">$host = "localhost"</code> on InfinityFree—use your assigned <code class="font-mono text-xs">sqlXXX.infinityfree.com</code> hostname.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">5. Live URL + User Guide + Video are all required</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Your instructor must be able to test your live InfinityFree website, read your annotated User Guide, and watch your RBIM-style promo video.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">6. Ensure real-time database persistence</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Records created, edited, or deleted through your PHP interface must persist in your InfinityFree MySQL database.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">7. Keep full local backups</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Maintain local copies of all PHP source files, your <code class="font-mono text-xs">.sql</code> export, User Guide PDF, and video file.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">8. Be prepared for live defense & Q&A</p>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">Every group member must be ready to explain the PHP CRUD code, SQL queries, and InfinityFree deployment setup.</p>
+            </div>
+          </div>
+
+          <div class="bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/60 rounded-2xl p-4 text-xs sm:text-sm text-brand-900 dark:text-brand-200">
+            <strong>InfinityFree Case-Sensitivity & File Path Reminder:</strong> Unlike Windows XAMPP, InfinityFree servers run on Linux. Ensure your PHP <code class="font-mono text-xs">require_once</code>, <code class="font-mono text-xs">header("Location: ...")</code>, CSS, and image paths match exact lowercase/uppercase filenames.
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 6. REFERENCE MATERIALS & FINAL PROJECT OBJECTIVE -->
+      <section id="references" class="scroll-mt-24 space-y-6">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Documentation & Goal</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Part 6. Reference Materials</h2>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase text-[11px] tracking-wider">
+                <tr>
+                  <th class="py-2.5 px-4">Topic</th>
+                  <th class="py-2.5 px-4">Official Resource</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">XAMPP Installation</td>
+                  <td class="py-2.5 px-4"><a href="https://www.apachefriends.org/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">Apache Friends ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">MySQL Installation</td>
+                  <td class="py-2.5 px-4"><a href="https://dev.mysql.com/downloads/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">MySQL Downloads ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">MySQL Workbench</td>
+                  <td class="py-2.5 px-4"><a href="https://dev.mysql.com/doc/workbench/en/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">MySQL Workbench Documentation ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">PHP PDO & Prepared Statements</td>
+                  <td class="py-2.5 px-4"><a href="https://www.php.net/manual/en/book.pdo.php" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">PHP PDO Documentation ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">InfinityFree Hosting Portal</td>
+                  <td class="py-2.5 px-4"><a href="https://www.infinityfree.com/" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">InfinityFree Official Website ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">InfinityFree MySQL Database Guide</td>
+                  <td class="py-2.5 px-4"><a href="https://forum.infinityfree.com/docs" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">InfinityFree Knowledge Base & Docs ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">InfinityFree File Upload & htdocs</td>
+                  <td class="py-2.5 px-4"><a href="https://forum.infinityfree.com/t/how-to-upload-files-with-ftp/49312" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">How to Upload Files via File Manager / FTP ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-4 font-semibold">InfinityFree Free SSL Setup</td>
+                  <td class="py-2.5 px-4"><a href="https://forum.infinityfree.com/t/how-to-get-a-free-ssl-certificate/49322" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-medium">How to Install a Free SSL Certificate ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Final Project Objective Callout -->
+        <div class="bg-gradient-to-br from-brand-700 via-indigo-800 to-slate-900 rounded-3xl p-6 sm:p-8 lg:p-10 text-white shadow-lg space-y-4">
+          <span class="inline-block px-3 py-1 rounded-full bg-white/15 text-brand-100 text-xs font-bold uppercase tracking-wider">
+            Final Project Objective
+          </span>
+          <p class="text-base sm:text-lg font-medium leading-relaxed text-slate-100">
+            By completing this final project, you should be able to independently design a relational database, engineer a complete PHP back-end web system with full CRUD functionality, deploy it live on InfinityFree, document its workflows in an illustrated User Guide, and effectively present its real-world value through an RBIM-style promotional video.
+          </p>
+          <div class="bg-black/25 border border-white/15 rounded-2xl p-4 text-sm sm:text-base font-bold text-amber-300">
+            Your final output must be a complete, live PHP web-based system on InfinityFree—supported by an annotated System User Guide and a Promotional Video Presentation.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+    <p>Web Systems and Technology — Final Project Instructions: PHP Back-End Development, CRUD Operations, InfinityFree Deployment & System Presentation</p>
+  </footer>
+
+  <script>
+    // --- THEME MANAGEMENT ---
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const savedTheme = localStorage.getItem('wst_final_theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('wst_final_theme', isDark ? 'dark' : 'light');
+    });
+
+    // --- MOBILE DRAWER NAVIGATION ---
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+    const closeMobileDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+    const desktopNavLinks = document.getElementById('desktopNavLinks');
+    const mobileNavLinks = document.getElementById('mobileNavLinks');
+
+    mobileNavLinks.innerHTML = desktopNavLinks.innerHTML;
+
+    function openMobileDrawer() {
+      mobileDrawerBackdrop.classList.remove('hidden');
+      mobileDrawer.classList.remove('-translate-x-full');
+    }
+
+    function closeMobileDrawer() {
+      mobileDrawerBackdrop.classList.add('hidden');
+      mobileDrawer.classList.add('-translate-x-full');
+    }
+
+    mobileMenuBtn.addEventListener('click', openMobileDrawer);
+    closeMobileDrawerBtn.addEventListener('click', closeMobileDrawer);
+    mobileDrawerBackdrop.addEventListener('click', closeMobileDrawer);
+    mobileNavLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMobileDrawer);
+    });
+
+    // --- TOAST & CLIPBOARD HELPERS ---
+    let toastTimeout;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      document.getElementById('toastMessage').textContent = msg;
+      banner.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        banner.classList.add('translate-y-20', 'opacity-0');
+      }, 2400);
+    }
+
+    function copyText(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Copied to clipboard!');
+      } catch (err) {
+        showToast('Unable to copy text.');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function copyCodeBlock(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        copyText(el.textContent);
+      }
+    }
+
+    // --- PART 1: OPTION A / OPTION B SWITCHER ---
+    function switchDbMethod(option) {
+      const btnA = document.getElementById('btnOptionA');
+      const btnB = document.getElementById('btnOptionB');
+      const panelA = document.getElementById('panelOptionA');
+      const panelB = document.getElementById('panelOptionB');
+
+      const activeClass = "py-3 px-4 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-xs border border-slate-200 dark:border-slate-700";
+      const inactiveClass = "py-3 px-4 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white";
+
+      if (option === 'A') {
+        btnA.className = activeClass;
+        btnB.className = inactiveClass;
+        panelA.classList.remove('hidden');
+        panelB.classList.add('hidden');
+      } else {
+        btnB.className = activeClass;
+        btnA.className = inactiveClass;
+        panelB.classList.remove('hidden');
+        panelA.classList.add('hidden');
+      }
+    }
+
+    // --- PART 2: PHP CODE TAB SWITCHER ---
+    function switchPhpTab(tabKey) {
+      ['db', 'test', 'read', 'crud'].forEach(key => {
+        const btn = document.getElementById(`phpTabBtn-${key}`);
+        const panel = document.getElementById(`phpTabPanel-${key}`);
+        if (key === tabKey) {
+          btn.className = "php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-brand-600 text-white transition";
+          panel.classList.remove('hidden');
+        } else {
+          btn.className = "php-tab-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition";
+          panel.classList.add('hidden');
+        }
+      });
+    }
+
+    // --- PART 2: INTERACTIVE CRUD SIMULATOR ---
+    const initialStudents = [
+      { id: 1, student_number: '2026-001', first_name: 'Juan', last_name: 'Dela Cruz', email: 'juan@email.com' },
+      { id: 2, student_number: '2026-002', first_name: 'Maria', last_name: 'Santos', email: 'maria@email.com' },
+      { id: 3, student_number: '2026-003', first_name: 'Pedro', last_name: 'Reyes', email: 'pedro@email.com' },
+      { id: 4, student_number: '2026-004', first_name: 'Ana', last_name: 'Garcia', email: 'ana@email.com' },
+      { id: 5, student_number: '2026-005', first_name: 'Jose', last_name: 'Cruz', email: 'jose@email.com' }
+    ];
+    let demoStudents = JSON.parse(JSON.stringify(initialStudents));
+    let nextStudentId = 6;
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+
+    function renderCrudTable() {
+      const tbody = document.getElementById('crudTableBody');
+      if (demoStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 text-xs">No records found in students table.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = demoStudents.map(s => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+          <td class="py-2.5 px-3 font-mono font-bold text-brand-600 dark:text-brand-400">${s.id}</td>
+          <td class="py-2.5 px-3 font-mono text-xs">${escapeHtml(s.student_number)}</td>
+          <td class="py-2.5 px-3 font-medium text-slate-900 dark:text-white">${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</td>
+          <td class="py-2.5 px-3 text-slate-600 dark:text-slate-300 text-xs">${escapeHtml(s.email)}</td>
+          <td class="py-2.5 px-3 text-right space-x-1.5 whitespace-nowrap">
+            <button type="button" onclick="editCrudStudent(${s.id})" class="px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-xs font-semibold hover:bg-amber-200 transition">Edit</button>
+            <button type="button" onclick="deleteCrudStudent(${s.id})" class="px-2.5 py-1 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 text-xs font-semibold hover:bg-rose-200 transition">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function handleCrudSubmit(e) {
+      e.preventDefault();
+      const editId = document.getElementById('crudEditId').value;
+      const student_number = document.getElementById('crudStudentNum').value.trim();
+      const first_name = document.getElementById('crudFirstName').value.trim();
+      const last_name = document.getElementById('crudLastName').value.trim();
+      const email = document.getElementById('crudEmail').value.trim();
+
+      if (!student_number || !first_name || !last_name || !email) return;
+
+      if (editId) {
+        const idNum = Number(editId);
+        demoStudents = demoStudents.map(s => s.id === idNum ? { id: idNum, student_number, first_name, last_name, email } : s);
+        document.getElementById('crudSqlPreview').textContent = `UPDATE students SET student_number='${student_number}', first_name='${first_name}', last_name='${last_name}', email='${email}' WHERE id=${idNum};`;
+        showToast(`Updated student record #${idNum}`);
+        cancelCrudEdit();
+      } else {
+        demoStudents.push({ id: nextStudentId++, student_number, first_name, last_name, email });
+        document.getElementById('crudSqlPreview').textContent = `INSERT INTO students (student_number, first_name, last_name, email) VALUES ('${student_number}', '${first_name}', '${last_name}', '${email}');`;
+        showToast('Added new student record!');
+        document.getElementById('crudDemoForm').reset();
+      }
+      renderCrudTable();
+    }
+
+    function editCrudStudent(id) {
+      const student = demoStudents.find(s => s.id === id);
+      if (!student) return;
+      document.getElementById('crudEditId').value = student.id;
+      document.getElementById('crudStudentNum').value = student.student_number;
+      document.getElementById('crudFirstName').value = student.first_name;
+      document.getElementById('crudLastName').value = student.last_name;
+      document.getElementById('crudEmail').value = student.email;
+      document.getElementById('crudSubmitBtn').textContent = 'Save';
+      document.getElementById('crudCancelEditBtn').classList.remove('hidden');
+      document.getElementById('crudSqlPreview').textContent = `SELECT * FROM students WHERE id=${id}; -- Ready for UPDATE`;
+    }
+
+    function cancelCrudEdit() {
+      document.getElementById('crudEditId').value = '';
+      document.getElementById('crudDemoForm').reset();
+      document.getElementById('crudSubmitBtn').textContent = '+ Add';
+      document.getElementById('crudCancelEditBtn').classList.add('hidden');
+    }
+
+    function deleteCrudStudent(id) {
+      demoStudents = demoStudents.filter(s => s.id !== id);
+      document.getElementById('crudSqlPreview').textContent = `DELETE FROM students WHERE id=${id};`;
+      showToast(`Deleted record #${id}`);
+      if (Number(document.getElementById('crudEditId').value) === id) {
+        cancelCrudEdit();
+      }
+      renderCrudTable();
+    }
+
+    function resetCrudDemo() {
+      demoStudents = JSON.parse(JSON.stringify(initialStudents));
+      nextStudentId = 6;
+      cancelCrudEdit();
+      document.getElementById('crudSqlPreview').textContent = 'SELECT * FROM students ORDER BY id ASC;';
+      renderCrudTable();
+      showToast('Sample students restored.');
+    }
+
+    // --- PART 3: ENVIRONMENT CONFIG SWITCHER ---
+    function switchEnvConfig(env) {
+      const btnProd = document.getElementById('envBtnProd');
+      const btnLocal = document.getElementById('envBtnLocal');
+      const panelProd = document.getElementById('envPanelProd');
+      const panelLocal = document.getElementById('envPanelLocal');
+
+      if (env === 'prod') {
+        btnProd.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white transition";
+        btnLocal.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 transition";
+        panelProd.classList.remove('hidden');
+        panelLocal.classList.add('hidden');
+      } else {
+        btnLocal.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white transition";
+        btnProd.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 transition";
+        panelLocal.classList.remove('hidden');
+        panelProd.classList.add('hidden');
+      }
+    }
+
+    // --- PART 4C: 16-ITEM INTERACTIVE CHECKLIST ---
+    const checklistItems = [
+      "Created the project database using XAMPP or MySQL Server.",
+      "Created the necessary relational tables and primary/foreign keys.",
+      "Inserted sample records into the project database.",
+      "Built complete PHP back-end scripts connected to MySQL (PDO/MySQLi).",
+      "Implemented full Create, Read, Update, and Delete (CRUD) operations.",
+      "Tested the complete PHP web-based system locally on XAMPP.",
+      "Exported the local database into a clean .sql backup file.",
+      "Uploaded all project files directly into InfinityFree's htdocs/ folder.",
+      "Created a MySQL database in InfinityFree vPanel.",
+      "Imported the .sql backup into InfinityFree phpMyAdmin.",
+      "Updated config/database.php with InfinityFree's MySQL hostname and credentials.",
+      "Tested all CRUD operations live on the deployed InfinityFree website.",
+      "Activated Free SSL and verified HTTPS access on InfinityFree.",
+      "Compiled System_User_Guide.pdf with annotated screenshots of every page & CRUD action.",
+      "Recorded & edited a 3–5 min RBIM-style Promotional Video Presentation.",
+      "Packaged all folders (Source Code, SQL, Docs, Video, Project_Details.txt)."
+    ];
+
+    const TOTAL_ITEMS = checklistItems.length;
+    let savedChecklist = JSON.parse(localStorage.getItem('wst_project_checklist_v2') || 'null');
+    let checklistState = (Array.isArray(savedChecklist) && savedChecklist.length === TOTAL_ITEMS)
+      ? savedChecklist
+      : new Array(TOTAL_ITEMS).fill(false);
+
+    function renderChecklist() {
+      const container = document.getElementById('checklistContainer');
+      container.innerHTML = checklistItems.map((label, idx) => {
+        const checked = checklistState[idx];
+        return `
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition select-none ${
+            checked
+              ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800/70 text-slate-900 dark:text-white'
+              : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 hover:border-brand-300 dark:hover:border-brand-700'
+          }">
+            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleChecklistItem(${idx})" class="mt-0.5 w-4 h-4 rounded accent-brand-600 cursor-pointer shrink-0">
+            <span class="text-xs sm:text-sm leading-snug ${checked ? 'line-through opacity-80' : ''}">${label}</span>
+          </label>
+        `;
+      }).join('');
+      updateChecklistProgress();
+    }
+
+    function toggleChecklistItem(idx) {
+      checklistState[idx] = !checklistState[idx];
+      localStorage.setItem('wst_project_checklist_v2', JSON.stringify(checklistState));
+      renderChecklist();
+    }
+
+    function resetChecklist() {
+      checklistState = new Array(TOTAL_ITEMS).fill(false);
+      localStorage.setItem('wst_project_checklist_v2', JSON.stringify(checklistState));
+      renderChecklist();
+      showToast(`Project checklist reset to 0/${TOTAL_ITEMS}.`);
+    }
+
+    function updateChecklistProgress() {
+      const completed = checklistState.filter(Boolean).length;
+      const pct = Math.round((completed / TOTAL_ITEMS) * 100);
+      document.getElementById('trackerCounterBadge').textContent = `${completed}/${TOTAL_ITEMS} completed`;
+      document.getElementById('navProgressBadge').textContent = `${completed}/${TOTAL_ITEMS}`;
+      document.getElementById('sidebarProgressCount').textContent = `${completed}/${TOTAL_ITEMS}`;
+      document.getElementById('sidebarProgressPct').textContent = `${pct}%`;
+      document.getElementById('trackerMainBar').style.width = `${pct}%`;
+      document.getElementById('sidebarProgressBar').style.width = `${pct}%`;
+    }
+
+    // --- PART 4D: PROJECT_DETAILS.TXT GENERATOR ---
+    function updateProjectDetailsPreview() {
+      const title = document.getElementById('pdTitle').value.trim();
+      const members = document.getElementById('pdMembers').value.trim();
+      const section = document.getElementById('pdSection').value.trim();
+      const lang = document.getElementById('pdLang').value.trim();
+      const dbms = document.getElementById('pdDbms').value.trim();
+      const url = document.getElementById('pdUrl').value.trim();
+      const videoUrl = document.getElementById('pdVideoUrl').value.trim();
+
+      const formatted = [
+        `Project / System Title: ${title}`,
+        `Group Members: ${members}`,
+        `Year and Section: ${section}`,
+        `Programming Stack: ${lang}`,
+        `Database Management System: ${dbms}`,
+        `Hosting Provider: InfinityFree`,
+        `Live Website URL: ${url}`,
+        `Promotional Video URL: ${videoUrl}`
+      ].join('\n');
+
+      document.getElementById('projectDetailsPreview').textContent = formatted;
+    }
+
+    function downloadProjectDetails() {
+      const content = document.getElementById('projectDetailsPreview').textContent;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Project_Details.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded Project_Details.txt');
+    }
+
+    // --- SCROLLSPY FOR SIDEBAR NAVIGATION ---
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('#desktopNavLinks a.nav-link');
+
+    window.addEventListener('scroll', () => {
+      let currentId = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 140;
+        if (window.scrollY >= top) {
+          currentId = sec.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        const dot = link.querySelector('span');
+        if (link.getAttribute('href') === `#${currentId}`) {
+          link.classList.add('bg-brand-50', 'dark:bg-brand-950/70', 'text-brand-700', 'dark:text-brand-300', 'font-bold');
+          if (dot) dot.className = 'w-2 h-2 rounded-full bg-brand-600 dark:bg-brand-400';
+        } else {
+          link.classList.remove('bg-brand-50', 'dark:bg-brand-950/70', 'text-brand-700', 'dark:text-brand-300', 'font-bold');
+          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-400';
+        }
+      });
+    });
+
+    // --- INITIALIZE ON LOAD ---
+    renderCrudTable();
+    renderChecklist();
+    updateProjectDetailsPreview();
+  </script>
+</body>
+</html>
